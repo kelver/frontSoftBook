@@ -1,0 +1,23 @@
+.main-bg {
+    height: 100%;
+    background: #e91e63 !important;
+}
+.textLeft{
+    text-align: left !important;
+}
+input:focus,
+button:focus {
+    border: 1px solid #e91e63 !important;
+    box-shadow: none !important;
+}
+
+.form-check-input:checked {
+    background-color: #e91e63 !important;
+    border-color: #e91e63 !important;
+}
+
+.card,
+.btn,
+input {
+    border-radius: 1% !important;
+}
