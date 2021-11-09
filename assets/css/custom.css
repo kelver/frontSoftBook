@@ -21,3 +21,27 @@ button:focus {
 input {
     border-radius: 1% !important;
 }
+
+
+/*loading*/
+#spinner {
+    position: fixed;
+    top: 0; left: 0; z-index: 9999;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 0.2s;
+}
+
+#spinner {
+    color: #FFF;
+    visibility: hidden;
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+#spinner.show {
+    visibility: visible;
+    opacity: 1;
+}

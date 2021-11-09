@@ -11,6 +11,10 @@
     <link rel= "stylesheet" href= "assets/css/custom.css" >
 </head>
 <body class="main-bg">
+<div id="spinner">
+    <i class="fa-solid fa-8x fa-rotate fa-spin"></i>
+</div>
+
 <div style="">
     <div class="container">
         <div class="row justify-content-center">

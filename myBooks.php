@@ -11,6 +11,10 @@
     <link rel= "stylesheet" href= "assets/css/custom.css" >
 </head>
 <body class="main-bg" onload="findBooks()">
+<div id="spinner">
+    <i class="fa-solid fa-8x fa-rotate fa-spin"></i>
+</div>
+
 <div >
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
@@ -24,9 +28,9 @@
                         <i class="fa-solid fa-temperature-half fa-xl" style="color:#FFF;"></i>
                         <span id="temp" style="margin-left: 2%; font-size: large; font-weight: bold; color:#FFF;"></span>
                     </ul>
-                    <form class="d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-light" type="submit">Search</button>
+                    <form class="d-flex" id="searchForm" name="searchForm">
+                        <input class="form-control me-2" name="search" id="search" type="search" placeholder="Buscar" aria-label="Buscar">
+                        <button class="btn btn-outline-light" type="submit">Buscar</button>
                     </form>
                     <div class="d-grid gap-2 col-3 mx-auto">
                         <button class="btn btn-outline-light text-nowrap bg-transparent" data-bs-toggle="modal" data-bs-target="#modalInserir">Novo Livro</button>
