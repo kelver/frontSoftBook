@@ -1,3 +1,5 @@
+let URLAPI = 'http://localhost:8081/api/';
+
 function showSpinn() {
     $('#spinner').addClass("show");
 }
@@ -12,7 +14,7 @@ $(document).on('submit', '#formLogin', function (e){
         'email': $('#username').val(),
         'password': $('#password').val()
     };
-    fetch('http://localhost:8081/api/auth/login', {
+    fetch(URLAPI + 'auth/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -36,7 +38,7 @@ $(document).on('submit', '#searchForm', function (e){
     const payload = {
         'search': $('#search').val()
     };
-    fetch('http://localhost:8081/api/books/find', {
+    fetch(URLAPI + 'books/find', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -54,7 +56,7 @@ $(document).on('submit', '#searchForm', function (e){
 
 $(document).on('click', '#showDetail', function (){
     showSpinn();
-    fetch('http://localhost:8081/api/books/' + $(this).attr('data-identify'), {
+    fetch(URLAPI + 'books/' + $(this).attr('data-identify'), {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -92,7 +94,7 @@ $(document).on('click', '.page-link', function (e){
     findBooks($(this).attr('data-href'));
 });
 
-function findBooks(url = 'http://localhost:8081/api/books'){
+function findBooks(url = URLAPI + 'books/'){
     showSpinn();
     return fetch(url, {
         method: 'GET',
@@ -111,7 +113,7 @@ function findBooks(url = 'http://localhost:8081/api/books'){
 
 $(document).on('click', '#showEditModal', function (){
     showSpinn();
-    return fetch('http://localhost:8081/api/books/' + $(this).attr('data-identify'), {
+    return fetch(URLAPI + 'books/' + $(this).attr('data-identify'), {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -134,7 +136,7 @@ $(document).on('click', '#showEditModal', function (){
 
 $(document).on('click', '#modalDelete #confirmDelete', function (){
     showSpinn();
-    return fetch('http://localhost:8081/api/books/' + $(document).find('#modalDelete #identify').val(), {
+    return fetch(URLAPI + 'books/' + $(document).find('#modalDelete #identify').val(), {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
@@ -165,7 +167,7 @@ $(document).on('click', '#sendEdit', function (e){
         'author': $(document).find('#modalEditar #author').val()
     };
 
-    return fetch('http://localhost:8081/api/books/' + $(document).find('#modalEditar #identify').val(), {
+    return fetch(URLAPI + 'books/' + $(document).find('#modalEditar #identify').val(), {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -195,7 +197,7 @@ $(document).on('click', '#sendInsert', function (e){
         'author': $(document).find('#modalInserir #author').val()
     };
 
-    return fetch('http://localhost:8081/api/books/', {
+    return fetch(URLAPI + 'books/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
