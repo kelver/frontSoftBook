@@ -7,12 +7,21 @@ function hideSpinn() {
     $('#spinner').removeClass("show");
 }
 
+$(document).on('click', '.cad', function (e){
+    $('.card.login').css('display', 'none');
+    $('.card.cadastro').css('display', 'block');
+});
+$(document).on('click', '.log', function (e){
+    $('.card.cadastro').css('display', 'none');
+    $('.card.login').css('display', 'block');
+});
+
 $(document).on('submit', '#formLogin', function (e){
     e.preventDefault();
     showSpinn();
     const payload = {
-        'email': $('#username').val(),
-        'password': $('#password').val()
+        'email': $('#formLogin #username').val(),
+        'password': $('#formLogin #password').val()
     };
     fetch(URLAPI + 'auth/login', {
         method: 'POST',
@@ -27,9 +36,71 @@ $(document).on('submit', '#formLogin', function (e){
             const user = res.me;
             localStorage.setItem('__my_app_token', res.access_token);
             localStorage.setItem('__my_app_user', user);
+
+            let date = moment().add(1, 'hour').format('DD/MM/YYYY HH:mm');
+            localStorage.setItem('__my_app_ttl', date);
+            console.log(date);
             validaLogin();
             hideSpinn();
         });
+});
+
+$(document).on('click', '.logout', function (e){
+    e.preventDefault();
+    showSpinn();
+
+    fetch(URLAPI + 'auth/logout', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('__my_app_token'),
+        }
+    })
+        .then(response => response.json())
+        .then(res => {
+            clearStorage();
+            validaLogin();
+        });
+});
+
+$(document).on('submit', '#formCadastro', function (e){
+    e.preventDefault();
+    showSpinn();
+    const payload = {
+        'name': $('#formCadastro #name').val(),
+        'email': $('#formCadastro #username').val(),
+        'password': $('#formCadastro #password').val()
+    };
+    fetch(URLAPI + 'auth/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: (JSON.stringify(payload))
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("HTTP status " + response.status);
+        }
+        return response.json();
+    })
+    .then(res => {
+        const user = res.me;
+        localStorage.setItem('__my_app_token', res.access_token);
+        localStorage.setItem('__my_app_user', user);
+
+        let date = moment().add(1, 'hour').format('DD/MM/YYYY HH:mm');
+        localStorage.setItem('__my_app_ttl', date);
+        validaLogin();
+        hideSpinn();
+    }).catch(() => {
+        clearStorage();
+        hideSpinn();
+        $('#modalError #msg').text('Não foi possível realizar o cadastro. Verifique os dados enviados e tente novamente.');
+        showModalError('#modalError');
+    });
 });
 
 $(document).on('submit', '#searchForm', function (e){
@@ -79,7 +150,10 @@ function validaLogin(){
     const token = localStorage.getItem('__my_app_token');
     let rotaLogin = window.location.pathname.indexOf('myBooks') <= -1;
 
-    if(!token && !rotaLogin){
+    let ttlApi = moment(localStorage.getItem('__my_app_ttl')).format('DD/MM/YYYY HH:mm');
+
+    if((!token && !rotaLogin) || (!rotaLogin && !moment().isBefore(ttlApi))){
+        clearStorage();
         window.location.href = "index.php";
         return false;
     }
@@ -87,6 +161,7 @@ function validaLogin(){
         window.location.href = "myBooks.php";
         return false;
     }
+
     return false;
 }
 
@@ -309,6 +384,20 @@ function showPosition(position)
             });
     }
     $('#temp').append(localStorage.getItem('__temp_my_app') + 'º C');
+}
+
+function clearStorage()
+{
+    localStorage.removeItem('__my_app_token');
+    localStorage.removeItem('__my_app_user');
+    localStorage.removeItem('__my_app_ttl');
+    localStorage.removeItem('__temp_my_app');
+}
+
+
+function showModalError(modal)
+{
+    $(document).find(modal).modal('show');
 }
 
 validaLogin();
